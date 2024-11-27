@@ -4,14 +4,27 @@ import "./index.css"
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import RegisterPage from './pages/RegisterPage.tsx'
 import LoginPage from './pages/LoginPage.tsx'
-import Homepage from './pages/Home.tsx'
+import DashboardLayout from './pages/DashboardLayout.tsx'
+import HomePage from './pages/HomePage.tsx'
+import BookPage from './pages/BooksPage.tsx'
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Homepage/>,
+    element: <DashboardLayout/>,
+    children: [
+      {
+        index: true,
+        element: <HomePage/>,
+      },
+      {
+        path: 'books',
+        element: <BookPage/>,
+      }
+    ],
   },
+  
   {
     path: '/register',
     element: <RegisterPage/>,
