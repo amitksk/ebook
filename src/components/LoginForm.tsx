@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,16 +19,28 @@ export default function LoginForm() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
-    if (email === "user@example.com" && password === "password") {
-      navigate("/dashboard");
-    } else {
-      setError("Invalid email or password");
-    }
-  };
+  const handleLoginSubmit = ()=> {
+     
+      const email = emailRef.current?.value;
+      const password = passwordRef.current?.value;
+
+      console.log("DATA", {email, password});
+
+      // Simulate API call
+    //   await new Promise((resolve) => setTimeout(resolve, 1000));
+    //   if (email === "user@example.com" && password === "password") {
+    //     navigate("/");
+    //   } else {
+    //     setError("Invalid email or password");
+    //   }
+    // } else {
+    //   setError("Please fill in all the fields");
+    // }
+  }
+
 
   return (
     <Card className="w-[350px]">
@@ -38,23 +50,23 @@ export default function LoginForm() {
           Enter your credentials to access your account.
         </CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleLoginSubmit}>
         <CardContent>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="email">Email</Label>
-              <Input
+              <Input ref={emailRef}
                 id="email"
                 type="email"
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+                required/>
             </div>
+
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="password">Password</Label>
-              <Input
+              <Input ref={passwordRef}
                 id="password"
                 type="password"
                 value={password}
@@ -64,8 +76,9 @@ export default function LoginForm() {
             </div>
           </div>
         </CardContent>
+
         <CardFooter className="flex flex-col">
-          <Button className="w-full" type="submit">
+          <Button onClick={handleLoginSubmit} className="w-full" type="submit">
             Sign In
           </Button>
           {error && (
