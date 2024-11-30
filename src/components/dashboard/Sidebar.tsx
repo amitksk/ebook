@@ -5,11 +5,11 @@ import { Link, useLocation } from 'react-router-dom'
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
-import { LayoutDashboard,  X } from 'lucide-react'
+import { BookAIcon, HomeIcon,  X } from 'lucide-react'
 
 const navItems = [
-  { href: '/', label: 'Overview', icon: LayoutDashboard }, // Default route
-  { href: '/books', label: 'Books', icon: LayoutDashboard },
+  { href: '/', label: 'Home', icon: HomeIcon }, // Default route
+  { href: '/books', label: 'Books', icon: BookAIcon },
 ];
 
 

@@ -4,9 +4,10 @@ import "./index.css"
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import RegisterPage from './pages/RegisterPage.tsx'
 import LoginPage from './pages/LoginPage.tsx'
-import DashboardLayout from './pages/DashboardLayout.tsx'
+import DashboardLayout from './Layout/DashboardLayout.tsx'
 import HomePage from './pages/HomePage.tsx'
 import BookPage from './pages/BooksPage.tsx'
+import AuthLayout from './Layout/AuthLayout.tsx'
 
 
 const router = createBrowserRouter([
@@ -24,16 +25,25 @@ const router = createBrowserRouter([
       }
     ],
   },
-  
+
+
   {
-    path: '/register',
-    element: <RegisterPage/>,
-  },
-  {
-    path: '/login',
-    element: <LoginPage/>,
+    path: '/auth',
+    element: <AuthLayout/>,
+    children: [
+      {
+        path: 'login',
+        element: <LoginPage/>,
+      },
+      {
+        path: 'register',
+        element: <RegisterPage/>,
+      },
+    ],
   }
+  
 ])
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

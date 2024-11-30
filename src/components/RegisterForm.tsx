@@ -142,9 +142,9 @@ export default function RegisterForm() {
           </Button>
 
           <p className="text-sm text-muted-foreground text-center p-3">
-            Don't have an account?{" "}
-            <Link to="/login" className="text-primary hover:underline">
-              Sign up
+            Already have an account?{" "}
+            <Link to="/auth/login" className="text-primary hover:underline">
+              Sign in
             </Link>
           </p>
            </div>
