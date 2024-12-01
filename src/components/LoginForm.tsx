@@ -12,33 +12,40 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "@/http/api.ts";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
+  // Mutations
+  const mutation = useMutation({
+    mutationFn: login,
+    onSuccess: () => {
+       console.log("login successful")
+
+        navigate("/home");
+    },
+  })
+
   const handleLoginSubmit = ()=> {
-     
       const email = emailRef.current?.value;
       const password = passwordRef.current?.value;
 
       console.log("DATA", {email, password});
 
-      // Simulate API call
-    //   await new Promise((resolve) => setTimeout(resolve, 1000));
-    //   if (email === "user@example.com" && password === "password") {
-    //     navigate("/");
-    //   } else {
-    //     setError("Invalid email or password");
-    //   }
-    // } else {
-    //   setError("Please fill in all the fields");
-    // }
+      if(!email || !password){
+        return alert("Please fill in all the fields");
+      }
+      mutation.mutate({email, password});
+
   }
 
 
