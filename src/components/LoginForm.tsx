@@ -18,7 +18,7 @@ import { login } from "@/http/api.ts";
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error] = useState("");
 
   const navigate = useNavigate();
 
@@ -55,6 +55,7 @@ export default function LoginForm() {
         <CardTitle>Login</CardTitle>
         <CardDescription>
           Enter your credentials to access your account.
+          {mutation.isPending && <div>Loading...</div>}
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleLoginSubmit}>

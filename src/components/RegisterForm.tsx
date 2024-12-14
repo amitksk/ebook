@@ -1,8 +1,4 @@
-"use client";
-
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,32 +10,43 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Link } from "react-router-dom";
-
-type FormData = {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  mobileNo: string;
-};
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { userRegister } from "@/http/api";
 
 export default function RegisterForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm<FormData>();
+  const navigate = useNavigate();
 
-  const onSubmit = async (data: FormData) => {
-    setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsSubmitting(false);
-    toast.success("Registration successful!");
-    console.log(data);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
+
+  // Mutations
+  const mutation = useMutation({
+    mutationFn: userRegister,
+    onSuccess: () => {
+      console.log("Registration successful");
+      navigate("/home");
+    },
+  });
+
+  const handleRegisterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const name = nameRef.current?.value;
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
+    const confirmPassword = confirmPasswordRef.current?.value;
+
+    if (!name || !email || !password || !confirmPassword) {
+      return alert("Please fill in all the fields");
+    }
+
+    if (password !== confirmPassword) {
+      return alert("Passwords do not match");
+    }
+
+    mutation.mutate({ name, email, password });
   };
 
   return (
@@ -48,107 +55,41 @@ export default function RegisterForm() {
         <CardTitle>Register</CardTitle>
         <CardDescription>Create your account</CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleRegisterSubmit}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              {...register("name", { required: "Name is required" })}
-              placeholder="John Doe"
-            />
-            {errors.name && (
-              <p className="text-sm text-red-500">{errors.name.message}</p>
-            )}
+            <Input ref={nameRef} id="name" placeholder="John Doe" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /\S+@\S+\.\S+/,
-                  message: "Invalid email address",
-                },
-              })}
-              placeholder="john@example.com"
-            />
-            {errors.email && (
-              <p className="text-sm text-red-500">{errors.email.message}</p>
-            )}
+            <Input ref={emailRef} id="email" type="email" placeholder="john@example.com" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
-                },
-              })}
-            />
-            {errors.password && (
-              <p className="text-sm text-red-500">{errors.password.message}</p>
-            )}
+            <Input ref={passwordRef} id="password" type="password" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="confirmPassword">Confirm Password</Label>
-            <Input
-              id="confirmPassword"
-              type="password"
-              {...register("confirmPassword", {
-                required: "Please confirm your password",
-                validate: (val: string) => {
-                  if (watch("password") != val) {
-                    return "Passwords do not match";
-                  }
-                },
-              })}
-            />
-            {errors.confirmPassword && (
-              <p className="text-sm text-red-500">
-                {errors.confirmPassword.message}
-              </p>
-            )}
+            <Input ref={confirmPasswordRef} id="confirmPassword" type="password" />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="mobileNo">Mobile Number</Label>
-            <Input
-              id="mobileNo"
-              type="tel"
-              {...register("mobileNo", {
-                required: "Mobile number is required",
-                pattern: {
-                  value: /^[0-9]{10}$/,
-                  message: "Invalid mobile number",
-                },
-              })}
-              placeholder="1234567890"
-            />
-            {errors.mobileNo && (
-              <p className="text-sm text-red-500">{errors.mobileNo.message}</p>
-            )}
-          </div>
+          {mutation.isError && (
+            <p className="text-sm text-red-500">Registration failed. Please try again.</p>
+          )}
         </CardContent>
-        <CardFooter>
-           <div className="w-full">
-           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Registering..." : "Register"}
-          </Button>
 
-          <p className="text-sm text-muted-foreground text-center p-3">
-            Already have an account?{" "}
-            <Link to="/auth/login" className="text-primary hover:underline">
-              Sign in
-            </Link>
-          </p>
-           </div>
-          
+        <CardFooter>
+          <div className="w-full">
+            <Button onClick={handleRegisterSubmit} type="submit" className="w-full" disabled={mutation.isPending}>
+              {mutation.isPending ? "Registering..." : "Register"}
+            </Button>
+            <p className="text-sm text-muted-foreground text-center p-3">
+              Already have an account?{" "}
+              <Link to="/auth/login" className="text-primary hover:underline">
+                Sign in
+              </Link>
+            </p>
+          </div>
         </CardFooter>
       </form>
     </Card>
