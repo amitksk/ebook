@@ -14,6 +14,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/http/api.ts";
+import useTokenStore from "@/store";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -21,6 +22,7 @@ export default function LoginForm() {
   const [error] = useState("");
 
   const navigate = useNavigate();
+  const setToken = useTokenStore((state) => state.setToken)
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -28,9 +30,10 @@ export default function LoginForm() {
   // Mutations
   const mutation = useMutation({
     mutationFn: login,
-    onSuccess: () => {
+    onSuccess: (response) => {
        console.log("login successful")
 
+        setToken(response.data.accessToken);
         navigate("/home");
     },
   })
