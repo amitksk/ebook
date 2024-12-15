@@ -27,18 +27,18 @@ export default function RegisterForm() {
     mutationFn: userRegister,
     onSuccess: () => {
       console.log("Registration successful");
-      navigate("/home");
+      navigate("/auth/login");
     },
   });
 
   const handleRegisterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const name = nameRef.current?.value;
+    const userName = nameRef.current?.value;
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
     const confirmPassword = confirmPasswordRef.current?.value;
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (!userName || !email || !password || !confirmPassword) {
       return alert("Please fill in all the fields");
     }
 
@@ -46,7 +46,7 @@ export default function RegisterForm() {
       return alert("Passwords do not match");
     }
 
-    mutation.mutate({ name, email, password });
+    mutation.mutate({ userName, email, password });
   };
 
   return (

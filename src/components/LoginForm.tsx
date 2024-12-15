@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,38 +20,30 @@ import useTokenStore from "@/store";
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const setToken = useTokenStore((state) => state.setToken)
-
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const setToken = useTokenStore((state) => state.setToken);
 
   // Mutations
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: (response) => {
-       console.log("login successful")
-
-        setToken(response.data.accessToken);
-        navigate("/home");
+      setToken(response.data.accessToken);
+      navigate("/");
     },
-  })
+    onError: (err) => {
+      setError(err.message || "Something went wrong");
+    },
+  });
 
-  const handleLoginSubmit = ()=> {
-      const email = emailRef.current?.value;
-      const password = passwordRef.current?.value;
-
-      console.log("DATA", {email, password});
-
-      if(!email || !password){
-        return alert("Please fill in all the fields");
-      }
-      mutation.mutate({email, password});
-
-  }
-
+  const handleLoginSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission
+    if (!email || !password) {
+      return alert("Please fill in all the fields");
+    }
+    mutation.mutate({ email, password });
+  };
 
   return (
     <Card className="w-[350px]">
@@ -66,30 +59,32 @@ export default function LoginForm() {
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="email">Email</Label>
-              <Input ref={emailRef}
+              <Input
                 id="email"
                 type="email"
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required/>
+                required
+                autoComplete="email"
+              />
             </div>
-
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="password">Password</Label>
-              <Input ref={passwordRef}
+              <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                autoComplete="current-password"
               />
             </div>
           </div>
         </CardContent>
 
         <CardFooter className="flex flex-col">
-          <Button onClick={handleLoginSubmit} className="w-full" type="submit">
+          <Button className="w-full" type="submit">
             Sign In
           </Button>
           {error && (
@@ -104,7 +99,6 @@ export default function LoginForm() {
               Sign up
             </Link>
           </p>
-
         </CardFooter>
       </form>
     </Card>

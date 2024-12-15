@@ -50,7 +50,6 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
                 </Button>
               </Link>
 
-
             ))}
           </nav>
         </ScrollArea>
