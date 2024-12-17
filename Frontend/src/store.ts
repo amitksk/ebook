@@ -1,23 +1,29 @@
-import { create } from "zustand";
-//import { devtools, persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
 
-export interface tokenStore {
-  token: string;
-  setToken: (data: string) => void;
-}
-
-const useTokenStore = create<tokenStore>((set) => ({
-    token: '',
-    setToken: (data: string) => set(() => ({ token: data })),
-  })
-);
-
-export default useTokenStore;
-
-
-// const useTokenStore = create<tokenStore>()(
-//   devtools((set) => ({
-//     token: "",
-//     setToken: (data: string) => set(() => ({ token: data })),
-//   }))
-// );
+export interface TokenStore {
+    accessToken: string;
+    refreshToken: string;
+    setTokens: (accessToken: string, refreshToken: string) => void;
+    clearTokens: () => void;
+  }
+  
+  const useTokenStore = create<TokenStore>()(
+    devtools(
+      persist(
+        (set) => ({
+          accessToken: '',
+          refreshToken: '',
+          setTokens: (accessToken, refreshToken) => {
+            console.log('Storing tokens:', accessToken, refreshToken); // Add log
+            set({ accessToken, refreshToken });
+          },
+          clearTokens: () => set({ accessToken: '', refreshToken: '' }),
+        }),
+        { name: 'jwtTokens' } // LocalStorage key
+      )
+    )
+  );
+  
+  export default useTokenStore;
+  

@@ -23,17 +23,29 @@ export default function LoginForm() {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const setToken = useTokenStore((state) => state.setToken);
+  const { setTokens } = useTokenStore(); // Access the Zustand store
+
 
   // Mutations
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: (response) => {
-      setToken(response.data.accessToken);
-      navigate("/");
+      console.log('Full Response:', response);
+  
+      const accessToken = response?.data?.data?.accessToken;
+      const refreshToken = response?.data?.data?.refreshToken;
+  
+      if (accessToken && refreshToken) {
+        console.log('Setting Tokens:', accessToken, refreshToken); // Debug log
+        setTokens(accessToken, refreshToken);
+        console.log('Tokens saved to Zustand');
+        navigate('/');
+      } else {
+        console.error('Access or Refresh token missing in response!');
+      }
     },
     onError: (err) => {
-      setError(err.message || "Something went wrong");
+      console.error('Login Error: ', err.message || 'Something went wrong');
     },
   });
 
@@ -46,7 +58,7 @@ export default function LoginForm() {
   };
 
   return (
-    <Card className="w-[350px]">
+    <Card className="w-full max-w-sm mx-auto">
       <CardHeader>
         <CardTitle>Login</CardTitle>
         <CardDescription>

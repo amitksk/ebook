@@ -3,12 +3,12 @@ import { Navigate, Outlet } from "react-router-dom"
 
 function AuthLayout() {
 
+  const accessToken = useTokenStore((state) => state.accessToken);
 
-  const token = useTokenStore((state)=> state.token)
-  if(token){
-    return <Navigate to={"/"} replace/>
+  // Check if accessToken exists 
+  if (accessToken) {
+    return <Navigate to={'/'} replace />;
   }
-
 
   return (
     <>
@@ -18,3 +18,4 @@ function AuthLayout() {
 }
 
 export default AuthLayout
+

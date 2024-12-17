@@ -1,16 +1,23 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Header } from '../components/dashboard/Header'
-import { Sidebar } from '../components/dashboard/Sidebar'
-import { Outlet } from 'react-router-dom'
+import { useState } from "react";
+import { Header } from "../components/dashboard/Header";
+import { Sidebar } from "../components/dashboard/Sidebar";
+import { Navigate, Outlet } from "react-router-dom";
+import useTokenStore from "@/store";
 
 export default function DashboardLayout() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const accessToken = useTokenStore((state) => state.accessToken);
+  // Redirect to /auth/login if accessToken is empty
+  if (!accessToken) {
+    return <Navigate to={"/auth/login"} replace />;
+  }
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen)
-  }
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -22,5 +29,5 @@ export default function DashboardLayout() {
         </main>
       </div>
     </div>
-  )
+  );
 }
