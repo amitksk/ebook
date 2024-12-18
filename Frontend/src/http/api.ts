@@ -11,7 +11,7 @@ const api = axios.create({
   api.interceptors.request.use(
     (config) => {
       const { accessToken } = useTokenStore.getState(); // Access Zustand state
-      console.log('Interceptor Access Token:', accessToken); // Log for debug
+      //console.log('Interceptor Access Token:', accessToken);
   
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
@@ -36,4 +36,9 @@ export const userRegister = async (data: {userName: string, email: string, passw
     return api.post('/api/v1/users/register', data)
 }
 
-export const getBooks = async()=> api.get('/api/v1/books/');
+//export const getBooks = async()=> api.get('/api/v1/books/');
+
+export const getBooks = async () => {
+  const response = await api.get('/api/v1/books');
+  return response.data;
+};

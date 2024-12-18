@@ -1,35 +1,43 @@
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Menu, Search, UserCircle } from "lucide-react";
-import useTokenStore from "@/store"
+import useTokenStore from "@/store";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { useEffect } from "react";
 
 interface HeaderProps {
   toggleSidebar: () => void;
 }
 
 export function Header({ toggleSidebar }: HeaderProps) {
-  const { accessToken, clearTokens } = useTokenStore((state) => ({
-    accessToken: state.accessToken,
-    clearTokens: state.clearTokens,
-  }));
+  // const { accessToken, clearTokens } = useTokenStore((state) => ({
+  //   accessToken: state.accessToken,
+  //   clearTokens: state.clearTokens,
+  // }));
+  // const navigate = useNavigate();
 
-  // Redirect to login if the user is not authenticated
-  if (accessToken === '') {
-    return <Navigate to={'/auth/login'} replace />;
-  }
+  // // Redirect to login if accessToken is not present
+  // useEffect(() => {
+  //   if (!accessToken) {
+  //     navigate('/auth/login', { replace: true });
+  //   }
+  // }, [accessToken, navigate]);
 
-  const logoutFn = () => {
-    clearTokens(); // Clears both access and refresh tokens
-  };
+  // // Logout function
+  // const logoutFn = () => {
+  //   clearTokens(); // Properly clears tokens
+  // };
 
-
+  // if (!accessToken) {
+  //   // Return null to avoid rendering unnecessary components during redirect
+  //   return null;
+  // }
 
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-background border-b">
@@ -61,8 +69,7 @@ export function Header({ toggleSidebar }: HeaderProps) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="p-3 rounded-full">
-              <UserCircle className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12" />{" "}
-              {/* Responsive sizes */}
+              <UserCircle className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
@@ -72,17 +79,14 @@ export function Header({ toggleSidebar }: HeaderProps) {
             <DropdownMenuItem onClick={() => console.log("Settings Clicked")}>
               Settings
             </DropdownMenuItem>
-
-            <DropdownMenuItem
-              onClick={logoutFn}
-              className="text-red-600"
-            >
-            Logout
+            <DropdownMenuItem onClick={() => console.log("Settings Clicked")}>
+              Logout
             </DropdownMenuItem>
-
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
     </header>
   );
 }
+
+//  onClick={logoutFn} className="text-red-600"

@@ -45,7 +45,8 @@ const createBook = asyncHandler(async (req, res) => {
      title,
      description,
      genre,
-     author: userId,
+     authorId: userId,
+     author: req.user.userName,
      file: file.url,
      coverImage: coverImage?.url,
    });

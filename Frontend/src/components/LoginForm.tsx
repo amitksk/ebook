@@ -20,7 +20,7 @@ import useTokenStore from "@/store";
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error] = useState("");
 
   const navigate = useNavigate();
   const { setTokens } = useTokenStore(); // Access the Zustand store
@@ -30,7 +30,7 @@ export default function LoginForm() {
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: (response) => {
-      console.log('Full Response:', response);
+      console.log('Full Response:'+ response);
   
       const accessToken = response?.data?.data?.accessToken;
       const refreshToken = response?.data?.data?.refreshToken;

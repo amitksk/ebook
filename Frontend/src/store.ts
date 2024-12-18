@@ -15,7 +15,7 @@ export interface TokenStore {
           accessToken: '',
           refreshToken: '',
           setTokens: (accessToken, refreshToken) => {
-            console.log('Storing tokens:', accessToken, refreshToken); // Add log
+            //console.log('Storing tokens:', accessToken, refreshToken);
             set({ accessToken, refreshToken });
           },
           clearTokens: () => set({ accessToken: '', refreshToken: '' }),

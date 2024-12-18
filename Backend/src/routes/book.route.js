@@ -8,9 +8,9 @@ import {
 
 const router = Router();
 
-router.use(verifyJWT);
+//router.use(verifyJWT);
 
-router.route("/creat-book").post(
+router.route("/creat-book").post(verifyJWT,
     multerUpload.fields([
         {
             name: "file",
