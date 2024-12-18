@@ -15,16 +15,20 @@ interface HeaderProps {
 }
 
 export function Header({ toggleSidebar }: HeaderProps) {
+  const { accessToken, clearTokens } = useTokenStore((state) => ({
+    accessToken: state.accessToken,
+    clearTokens: state.clearTokens,
+  }));
 
-
-  const {token, setToken} = useTokenStore((state)=> state);
-  if(token===''){
-    return <Navigate to={'/auth/login'} replace/>
+  // Redirect to login if the user is not authenticated
+  if (accessToken === '') {
+    return <Navigate to={'/auth/login'} replace />;
   }
 
-  const logoutFn=()=>{
-    setToken('');
-  }
+  const logoutFn = () => {
+    clearTokens(); // Clears both access and refresh tokens
+  };
+
 
 
   return (
@@ -68,14 +72,14 @@ export function Header({ toggleSidebar }: HeaderProps) {
             <DropdownMenuItem onClick={() => console.log("Settings Clicked")}>
               Settings
             </DropdownMenuItem>
+
             <DropdownMenuItem
-              onClick={() => {
-                 logoutFn
-              }}
+              onClick={logoutFn}
               className="text-red-600"
             >
-              Logout
+            Logout
             </DropdownMenuItem>
+
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
