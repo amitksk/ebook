@@ -80,8 +80,21 @@ const getAllBooks = asyncHandler(async (req, res) => {
   }
 });
 
+// const getAllBooks = asyncHandler(async (req, res) => {
+//   try {
+//     const books = await Book.find({ userId: req.user.id }); // Only books belonging to the logged-in user
+//     res.status(200).json({ success: true, data: books });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Failed to retrieve books",
+//       error: error.message,
+//     });
+//   }
+// });
  
-//       const book = await book.find().populate("author", "name");
+
+//   const book = await book.find().populate("author", "name");
  
 
 export {
