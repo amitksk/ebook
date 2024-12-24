@@ -5,8 +5,8 @@ import { Header } from "../components/dashboard/Header";
 import { Sidebar } from "../components/dashboard/Sidebar";
 import { Link, Navigate, Outlet } from "react-router-dom";
 import useTokenStore from "@/store";
-import { Book, Home } from "lucide-react";
-
+import { Book, Home, PlusCircle } from "lucide-react";
+ 
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -46,6 +46,14 @@ export default function DashboardLayout() {
             >
               <Book className="inline-block w-5 h-5 mr-2" />
               Books
+            </Link>
+
+            <Link
+              to="/books/create"
+              className="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-800"
+            >
+              <PlusCircle className="inline-block w-5 h-5 mr-2" />
+              Create
             </Link>
           </nav>
         </aside>

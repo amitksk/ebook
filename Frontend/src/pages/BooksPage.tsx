@@ -1,19 +1,21 @@
-import { 
-  Breadcrumb, 
-  BreadcrumbItem, 
-  BreadcrumbLink, 
-  BreadcrumbList, 
-  BreadcrumbPage, 
-  BreadcrumbSeparator 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { getBooks } from "@/http/api";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { BookCard } from "@/components/BookCard";
+import { Button } from "@/components/ui/button";
+import CreateBook from "@/pages/CreateBook";
 
 function BooksPage() {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['books'],
+    queryKey: ["books"],
     queryFn: getBooks, // Fetch books from the server
   });
 
@@ -26,7 +28,9 @@ function BooksPage() {
 
   // Show an error message if the API call fails
   if (isError) {
-    return <div className="text-center py-8 text-red-500">Failed to load books.</div>;
+    return (
+      <div className="text-center py-8 text-red-500">Failed to load books.</div>
+    );
   }
 
   // Ensure data is an array
@@ -40,15 +44,23 @@ function BooksPage() {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink>
-                <Link to={'/'}>Home</Link>
+                <Link to={"/"}>Home</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Book</BreadcrumbPage>
+              <BreadcrumbPage>Books</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+
+        <Link to="/books/create">
+          <div className="flex justify-end">
+            <Button>
+              <span className="ml-2">Add Book</span>
+            </Button>
+          </div>
+        </Link>
       </div>
 
       <div className="container mx-auto px-4 py-8">

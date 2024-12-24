@@ -9,6 +9,7 @@ import HomePage from "./pages/HomePage.tsx";
 import BookPage from "./pages/BooksPage.tsx";
 import AuthLayout from "./Layout/AuthLayout.tsx";
 import {QueryClientProvider, QueryClient} from '@tanstack/react-query'
+import CreateBook from "./pages/CreateBook.tsx";
 
 const queryClient = new QueryClient()
 
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
         path: "books",
         element: <BookPage />,
       },
+      {
+        path: "books/create",
+        element: <CreateBook />,
+      }
     ],
   },
 
