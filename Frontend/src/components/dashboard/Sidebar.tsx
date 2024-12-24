@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
-import { BookAIcon, HomeIcon,  X } from 'lucide-react'
+import { BookAIcon, HomeIcon } from 'lucide-react'
 
 const navItems = [
   { href: '/', label: 'Home', icon: HomeIcon }, // Default route
@@ -31,7 +31,7 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetContent side="left" className="p-0 w-72">
         <div className="flex items-center justify-between p-6 bg-muted">
-          <h2 className="text-lg font-semibold">Navigation</h2>
+          <h2 className="text-lg font-semibold">Ebook</h2>
         </div>
         <ScrollArea className="h-[calc(100vh-5rem)] pb-10">
           <nav className="space-y-2 p-6">

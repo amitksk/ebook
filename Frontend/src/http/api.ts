@@ -2,7 +2,7 @@ import useTokenStore from "@/store";
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: "http://localhost:8000",
     headers: {
       'Content-Type': 'application/json',
     },
@@ -35,8 +35,6 @@ export const login = async (data: {email: string, password: string}) => {
 export const userRegister = async (data: {userName: string, email: string, password: string}) => {
     return api.post('/api/v1/users/register', data)
 }
-
-//export const getBooks = async()=> api.get('/api/v1/books/');
 
 export const getBooks = async () => {
   const response = await api.get('/api/v1/books');
