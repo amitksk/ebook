@@ -8,11 +8,11 @@ import { uploadOnCloudinary } from "../services/cloudinary.js";
 //----------------------Create Book--------------------
 const createBook = asyncHandler(async (req, res) => {
 
-    const {title, description, genre} = req.body;
-    const userId = req.user?._id;
+    const {title, description, genre, author} = req.body;
+    
 
-    if (!title) {
-        throw new ApiError(400, "Title is required")
+    if (!title || !description || !genre || !author) {
+        throw new ApiError(400, "All fields are required")
     }
 
    try {
@@ -45,8 +45,7 @@ const createBook = asyncHandler(async (req, res) => {
      title,
      description,
      genre,
-     authorId: userId,
-     author: req.user.userName,
+     author,
      file: file.url,
      coverImage: coverImage?.url,
    });

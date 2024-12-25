@@ -25,8 +25,8 @@ export default function RegisterForm() {
   // Mutations
   const mutation = useMutation({
     mutationFn: userRegister,
-    onSuccess: (data) => {
-      console.log("Registration successful"+ JSON.stringify(data));
+    onSuccess: () => {
+      //console.log("Registration successful"+ JSON.stringify(data));
       navigate("/auth/login");
     },
   });
@@ -63,11 +63,19 @@ export default function RegisterForm() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input ref={emailRef} id="email" type="email" placeholder="john@example.com" />
+            <Input 
+            ref={emailRef} 
+            id="email" 
+            type="email" 
+            placeholder="john@example.com" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input ref={passwordRef} id="password" type="password" />
+            <Input 
+            ref={passwordRef} 
+            id="password" 
+            type="password"
+            placeholder="Enter password" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="confirmPassword">Confirm Password</Label>

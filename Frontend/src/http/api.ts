@@ -1,4 +1,4 @@
-import useTokenStore from "@/store";
+//import useTokenStore from "@/store";
 import axios from "axios";
 
 const api = axios.create({
@@ -8,23 +8,27 @@ const api = axios.create({
     },
   });
   
-  api.interceptors.request.use(
-    (config) => {
-      const { accessToken } = useTokenStore.getState(); // Access Zustand state
-      //console.log('Interceptor Access Token:', accessToken);
+  // api.interceptors.request.use(
+  //   (config) => {
+  //     const { accessToken } = useTokenStore.getState(); // Access Zustand state
+  //     console.log('Interceptor Access Token:', accessToken);
   
-      if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
-      } else {
-        console.warn('No access token found!');
-      }
+  //     if (accessToken) {
+  //       config.headers.Authorization = `Bearer ${accessToken}`;
+  //     } else {
+  //       console.warn("No access token found! Ensure Zustand is correctly setting tokens.");
+  //     }
   
-      return config;
-    },
-    (error) => Promise.reject(error)
-  );
+  //     console.log("Request Config:", config);
+  //     return config;
+  //   },
+  //   (error) => {
+  //     console.error("Interceptor Error:", error);
+  //     return Promise.reject(error);
+  //   }
+  // );
   
-  export default api;
+  // export default api;
   
 
 
@@ -39,4 +43,12 @@ export const userRegister = async (data: {userName: string, email: string, passw
 export const getBooks = async () => {
   const response = await api.get('/api/v1/books');
   return response.data;
+};
+
+export const createBook = async (data: FormData) => {
+  return api.post("/api/v1/books/create-book", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };

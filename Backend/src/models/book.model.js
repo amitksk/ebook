@@ -12,12 +12,13 @@ const bookSchema = new mongoose.Schema(
         },
         author: {
             type: String,
-        },
-        authorId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
             required: true,
         },
+        // authorId: {
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     ref: "User",
+        //     required: true,
+        // },
         coverImage: {
             type: String,
             required: true,

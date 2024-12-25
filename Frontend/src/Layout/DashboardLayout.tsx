@@ -28,7 +28,7 @@ export default function DashboardLayout() {
 
         {/* Responsive Aside Section */}
         <aside
-          className={`w-full md:w-64 bg-gray-100 shadow-md md:block ${
+          className={`w-full md:w-64 bg-blue-100 shadow-md md:block ${
             isSidebarOpen ? "block" : "hidden"
           } md:relative fixed top-0 left-0 z-40`}
         >

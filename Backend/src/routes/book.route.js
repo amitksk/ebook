@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { multerUpload } from "../middlewares/multer.middleware.js";
-import { verifyJWT } from "../middlewares/auth.middleware.js";
+//import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { 
     createBook, 
     getAllBooks 
@@ -10,7 +10,7 @@ const router = Router();
 
 //router.use(verifyJWT);
 
-router.route("/creat-book").post(verifyJWT,
+router.route("/create-book").post(
     multerUpload.fields([
         {
             name: "file",
@@ -26,4 +26,3 @@ router.route("/creat-book").post(verifyJWT,
 router.route("/").get(getAllBooks)
 
 export default router;
-

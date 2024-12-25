@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -23,29 +22,41 @@ export default function LoginForm() {
   const [error] = useState("");
 
   const navigate = useNavigate();
-  const { setTokens } = useTokenStore(); // Access the Zustand store
 
+  const { setTokens } = useTokenStore.getState();
+
+  // // Inside your component
+  // useEffect(() => {
+  //   const { accessToken } = useTokenStore.getState(); // Get token after the mutation
+  //   console.log("Access Token after update:", accessToken);
+  // }, [useTokenStore.getState().accessToken]); // Trigger effect when accessToken changes
 
   // Mutations
   const mutation = useMutation({
     mutationFn: login,
-    onSuccess: (response) => {
-      console.log('Full Response:'+ response);
-  
+    onSuccess: async (response) => {
       const accessToken = response?.data?.data?.accessToken;
       const refreshToken = response?.data?.data?.refreshToken;
-  
+
       if (accessToken && refreshToken) {
-        console.log('Setting Tokens:', accessToken, refreshToken); // Debug log
+        console.log("Tokens:", accessToken, refreshToken);
+        
         setTokens(accessToken, refreshToken);
-        console.log('Tokens saved to Zustand');
-        navigate('/');
+
+      console.log("Tokens saved to Zustand");
+
+      // Force a state update or check
+      const { accessToken: updatedAccessToken } = useTokenStore.getState();
+      console.log("Updated Access Token:", updatedAccessToken);
+
+      navigate("/");
       } else {
-        console.error('Access or Refresh token missing in response!');
+        console.error("Access or Refresh token missing in response!");
       }
     },
     onError: (err) => {
-      console.error('Login Error: ', err.message || 'Something went wrong');
+      console.error("Login Error: ", err.message || "Something went wrong");
+      alert(err.message || "Login failed");
     },
   });
 

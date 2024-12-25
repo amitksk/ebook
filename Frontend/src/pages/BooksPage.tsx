@@ -11,15 +11,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { BookCard } from "@/components/BookCard";
 import { Button } from "@/components/ui/button";
-import CreateBook from "@/pages/CreateBook";
 
 function BooksPage() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["books"],
     queryFn: getBooks, // Fetch books from the server
+    staleTime: 20000,
   });
-
-  //console.log("Data" + JSON.stringify(data))
 
   // Show a loading spinner or fallback UI when data is loading
   if (isLoading) {
