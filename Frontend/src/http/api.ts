@@ -8,11 +8,9 @@ const api = axios.create({
     },
   });
   
-  // api.interceptors.request.use(
-  //   (config) => {
+  // api.interceptors.request.use((config) => {
   //     const { accessToken } = useTokenStore.getState(); // Access Zustand state
   //     console.log('Interceptor Access Token:', accessToken);
-  
   //     if (accessToken) {
   //       config.headers.Authorization = `Bearer ${accessToken}`;
   //     } else {
@@ -22,13 +20,8 @@ const api = axios.create({
   //     console.log("Request Config:", config);
   //     return config;
   //   },
-  //   (error) => {
-  //     console.error("Interceptor Error:", error);
-  //     return Promise.reject(error);
-  //   }
   // );
   
-  // export default api;
   
 
 

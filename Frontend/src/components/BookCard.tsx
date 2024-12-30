@@ -1,4 +1,5 @@
-import { Book, Download } from "lucide-react";
+//import { Book, Download } from "lucide-react";
+import { Book } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,6 +16,7 @@ interface BookCardProps {
   genre: string;
   coverImage: string;
   bookPDF: string;
+  onClick: () => void; // New prop for click handler
 }
 
 export function BookCard({
@@ -23,10 +25,13 @@ export function BookCard({
   author,
   genre,
   coverImage,
-  bookPDF,
+  onClick,
 }: BookCardProps) {
   return (
-    <Card className="w-full max-w-xs mx-auto p-0">
+    <Card
+      className="w-full max-w-xs mx-auto p-0 cursor-pointer hover:shadow-lg transition"
+      onClick={onClick} // Use the onClick handler
+    >
       <CardHeader className="items-center">
         <div className="relative w-40">
           <img
@@ -41,7 +46,8 @@ export function BookCard({
         <p className="text-xs text-muted-foreground mb-2">by {author}</p>
         <p className="text-xs text-muted-foreground mb-4">Genre: {genre}</p>
         <p className="text-xs line-clamp-2 mb-4">
-          {description.split(" ").slice(0, 55).join(" ")}{description.split(" ").length > 55 ? "..." : ""}
+          {description.split(" ").slice(0, 55).join(" ")}
+          {description.split(" ").length > 55 ? "..." : ""}
         </p>
       </CardContent>
       <CardFooter className="flex justify-between items-center">
@@ -52,8 +58,9 @@ export function BookCard({
       </CardFooter>
     </Card>
   );
-  
-}  
+}
+
+
 
 {/* <Button variant="secondary" size="sm" asChild>
   <a href={bookPDF} download>

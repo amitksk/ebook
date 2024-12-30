@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createBook } from "@/http/api";
 
 function CreateBook() {
@@ -34,10 +34,12 @@ function CreateBook() {
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [file, setFile] = useState<File | null>(null);
 
+  const queryClint= useQueryClient();
   // Mutations
   const mutation = useMutation({
     mutationFn: createBook,
     onSuccess: (data) => {
+      queryClint.invalidateQueries({queryKey: ['books']}); // invalidate books query when a book is created
       console.log("Create Book Successfully" + JSON.stringify(data));
       navigate("/books");
     },
