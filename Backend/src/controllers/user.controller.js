@@ -30,7 +30,7 @@ const generateAccessAndRefreshToken = async (userId) => {
 //--------------------Register User--------------------
 const registerUser = asyncHandler(async (req, res) => {
 
-  console.log("Request Body: +", req.body);
+  //console.log("Request Body: +", req.body);
   const { userName, email, password } = req.body;
 
   //1. --------validate user details---------

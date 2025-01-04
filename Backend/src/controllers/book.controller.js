@@ -86,9 +86,15 @@ const getAllBooks = asyncHandler(async (req, res) => {
 
 //----------------------Get single books----------------
 const getSingleBook = asyncHandler(async (req, res) => {
+  const bookId = req.params.id;
+
+  if (!bookId) {
+    throw new ApiError(400, "Invalid book id")
+  }
+
   try {
     // Fetch single book from the database
-    const book = await Book.findById(req.params.id);
+    const book = await Book.findById(bookId);
     return res
     .status(200)
     .json(new ApiResponse(200, book, "Book fetched successfully"))
@@ -104,9 +110,97 @@ const getSingleBook = asyncHandler(async (req, res) => {
   }
 });
 
+//----------------------Update a book-------------------
+const updateBook = asyncHandler(async (req, res) => {
+  const bookId = req.params.id;
+  const {title, description, genre, author} = req.body;
+
+  if (!bookId) {
+    throw new ApiError(400, "Invalid book id")
+  }
+  if (!title || !description || !genre || !author) {
+    throw new ApiError(400, "All fields are required")
+  }
+
+  try {
+    // Fetch single book from the database
+    const book = await Book.findByIdAndUpdate(bookId, 
+      {
+        $set: {title, description, genre, author}
+      },
+      {new: true}
+    );
+    return res
+    .status(200)
+    .json(new ApiResponse(200, book, "Book Update successfully"))
+    
+  } catch (error) {
+    return res
+    .status(500)
+    .json({
+      success: false,
+      message: "Failed to retrieve book",
+      error: error.message,
+    });
+  }
+});
+
+//----------------------Get Author Book-----------------
+const getAuthorBook = asyncHandler(async (req, res) => {
+  const author = req.params.author;
+
+  if (!author) {
+    throw new ApiError(400, "Invalid author")
+  }
+
+  try {
+    // Fetch single book from the database
+    const book = await Book.find({author});
+    return res
+    .status(200)
+    .json(new ApiResponse(200, book, "Author Book fetched successfully"))
+    
+  } catch (error) {
+    return res
+    .status(500)
+    .json({
+      success: false,
+      message: "Failed to retrieve book",
+      error: error.message,
+    });
+  }
+});
+
+//----------------------Delete a book-------------------
+const deleteBook = asyncHandler(async (req, res) => {
+  const bookId = req.params.id;
+
+  if (!bookId) {
+    throw new ApiError(400, "Invalid book id")
+  }
+
+  try {
+    // Fetch single book from the database
+    const book = await Book.findByIdAndDelete(bookId);
+    return res
+    .status(200)
+    .json(new ApiResponse(200, book, "Book deleted successfully"))
+    
+  } catch (error) {
+    return res
+    .status(500)
+    .json({
+      success: false,
+      message: "Failed to delete book",
+      error: error.message,
+    });
+  }
+});
 
 export {
   createBook, 
   getAllBooks,
   getSingleBook,
+  updateBook,
+  deleteBook,
 }

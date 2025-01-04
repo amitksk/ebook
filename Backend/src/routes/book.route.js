@@ -3,8 +3,10 @@ import { multerUpload } from "../middlewares/multer.middleware.js";
 //import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { 
     createBook, 
+    deleteBook, 
     getAllBooks, 
-    getSingleBook
+    getSingleBook,
+    updateBook
 } from "../controllers/book.controller.js";
 
 const router = Router();
@@ -26,5 +28,7 @@ router.route("/create-book").post(
 
 router.route("/").get(getAllBooks)
 router.route("/single-book/:id").get(getSingleBook)
+router.route("/update-book/:id").patch(updateBook)
+router.route("/delete-book/:id").delete(deleteBook)
 
 export default router;
