@@ -6,11 +6,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -18,11 +13,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createBook } from "@/http/api";
+import useTokenStore from "@/store";
 
 function CreateBook() {
+
+  const accessToken = useTokenStore((state) => state.accessToken);
+  // Redirect to /auth/login if accessToken is empty
+  if (!accessToken) {
+    return <Navigate to={"/auth/login"} replace />;
+  }
   
   const navigate = useNavigate();
 

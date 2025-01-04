@@ -1,18 +1,29 @@
-import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { getBookById } from "@/http/api";
+import { Link, useParams } from "react-router-dom";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getBookById, updateBookRating } from "@/http/api";
 import { useState } from "react";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
 function BookDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const queryClient = useQueryClient();
 
-  console.log("params", { id });
+  // useEffect(() => {
+  //   console.log("params", { id });
+  // }, [id]);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["book", id],
     queryFn: () => getBookById(id!),
     enabled: !!id, // Ensure the query only runs if id is not undefined
+  });
+
+  const mutation = useMutation({
+    mutationFn: updateBookRating,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["book", id as string] });
+    },
   });
 
   if (isLoading) {
@@ -25,7 +36,40 @@ function BookDetailsPage() {
 
   const book = data?.data;
 
+  const handleRatingClick = (rating: number) => {
+    if (id) {
+      mutation.mutate({ id, rating });
+    }
+  };
+
   return (
+    <section>
+      <div>
+      <Breadcrumb>
+           <BreadcrumbList>
+
+             <BreadcrumbItem>
+               <BreadcrumbLink>
+                 <Link to={"/"}>Home</Link>
+               </BreadcrumbLink>
+             </BreadcrumbItem>
+             <BreadcrumbSeparator />
+
+             <BreadcrumbItem>
+               <BreadcrumbLink>
+                 <Link to={"/"}>Books</Link>
+               </BreadcrumbLink>
+             </BreadcrumbItem>
+             <BreadcrumbSeparator />
+
+             <BreadcrumbItem>
+               <BreadcrumbPage>Book</BreadcrumbPage>
+             </BreadcrumbItem>
+
+           </BreadcrumbList>
+         </Breadcrumb>
+      </div>
+     
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden animate-fade-in">
         <div className="md:flex">
@@ -47,12 +91,13 @@ function BookDetailsPage() {
               </button>
             </p>
             <div className="flex items-center mb-4">
-              <span className="text-gray-700 text-base mr-2"><strong>Rating:</strong></span>
+              <span className="text-gray-700 text-base mr-2"><strong>Rating:</strong>{book.rating}</span>
               <div className="flex">
                 {[...Array(5)].map((_, index) => (
                   <svg
                     key={index}
-                    className={`w-6 h-6 ${index < book.rating ? "text-yellow-500" : "text-gray-300"}`}
+                    onClick={() => handleRatingClick(index + 1)}
+                    className={`w-6 h-6 cursor-pointer ${index < book.rating ? "text-yellow-500" : "text-gray-300"}`}
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -72,6 +117,7 @@ function BookDetailsPage() {
         </div>
       </div>
     </div>
+    </section>
   );
 }
 

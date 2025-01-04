@@ -22,8 +22,6 @@ const api = axios.create({
   //   },
   // );
   
-  
-
 
 export const login = async (data: {email: string, password: string}) => {
     return api.post('/api/v1/users/login', data)
@@ -38,6 +36,11 @@ export const getBooks = async () => {
   return response.data;
 };
 
+export const getBookById = async (id: string) => {
+  const response = await api.get(`/api/v1/books/single-book/${id}`);
+  return response.data;
+};
+
 export const createBook = async (data: FormData) => {
   return api.post("/api/v1/books/create-book", data, {
     headers: {
@@ -47,7 +50,7 @@ export const createBook = async (data: FormData) => {
   });
 };
 
-export const getBookById = async (id: string) => {
-  const response = await api.get(`/api/v1/books/single-book/${id}`);
+export const updateBookRating = async ({ id, rating }: { id: string, rating: number }) => {
+  const response = await api.patch(`/api/v1/books/rating/${id}`, { rating });
   return response.data;
 };

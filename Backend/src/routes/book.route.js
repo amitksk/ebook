@@ -6,7 +6,8 @@ import {
     deleteBook, 
     getAllBooks, 
     getSingleBook,
-    updateBook
+    updateBook,
+    updateBookRating
 } from "../controllers/book.controller.js";
 
 const router = Router();
@@ -30,5 +31,6 @@ router.route("/").get(getAllBooks)
 router.route("/single-book/:id").get(getSingleBook)
 router.route("/update-book/:id").patch(updateBook)
 router.route("/delete-book/:id").delete(deleteBook)
+router.route("/rating/:id").patch(updateBookRating)
 
 export default router;

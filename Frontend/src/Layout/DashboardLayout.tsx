@@ -1,20 +1,12 @@
-"use client";
-
-import { useState } from "react";
+ import { useState } from "react";
 import { Header } from "../components/dashboard/Header";
 import { Sidebar } from "../components/dashboard/Sidebar";
-import { Link, Navigate, Outlet } from "react-router-dom";
-import useTokenStore from "@/store";
+import { Link, Outlet } from "react-router-dom";
+import {Footer} from "../components/dashboard/Footer";
 import { Book, Home, PlusCircle } from "lucide-react";
  
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const accessToken = useTokenStore((state) => state.accessToken);
-  // Redirect to /auth/login if accessToken is empty
-  if (!accessToken) {
-    return <Navigate to={"/auth/login"} replace />;
-  }
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -60,9 +52,12 @@ export default function DashboardLayout() {
 
         {/* Main Outlet */}
         <main className="flex-1 p-6 bg-background">
+
           <Outlet /> {/* Dynamically renders child routes */}
+
         </main>
       </div>
+      <Footer />
     </div>
   );
 }

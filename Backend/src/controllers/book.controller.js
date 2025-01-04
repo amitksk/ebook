@@ -8,28 +8,15 @@ import { uploadOnCloudinary } from "../services/cloudinary.js";
 //----------------------Create Book--------------------
 const createBook = asyncHandler(async (req, res) => {
 
-    const {title, description, genre, author} = req.body;
-    //const userId = req.user?._id;
-
-    // if (!userId) {
-    //     throw new ApiError(401, "User not authenticated de do error!!!");
-    // }
+    const {title, description, genre, author, rating} = req.body;
 
     if (!title || !description || !genre || !author) {
         throw new ApiError(400, "All fields are required")
     }
 
    try {
-     const fileLocalPath = await req.files?.file[0]?.path;
- 
-   let coverImageLocalPath;
-   if (
-     req.files &&
-     Array.isArray(req.files.coverImage) &&
-     req.files.coverImage.length > 0
-   ) {
-     coverImageLocalPath = await req.files?.coverImage[0]?.path;
-   }
+    const fileLocalPath = req.files?.file?.[0]?.path;
+    const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
  
    if (!fileLocalPath || !coverImageLocalPath) {
      throw new ApiError(400, "Cover-image and file is required...!!");
@@ -50,8 +37,9 @@ const createBook = asyncHandler(async (req, res) => {
      description,
      genre,
      author,
+     rating,
      file: file.url,
-     coverImage: coverImage?.url,
+     coverImage: coverImage.url,
    });
  
    return res
@@ -184,7 +172,7 @@ const deleteBook = asyncHandler(async (req, res) => {
     const book = await Book.findByIdAndDelete(bookId);
     return res
     .status(200)
-    .json(new ApiResponse(200, book, "Book deleted successfully"))
+    .json(new ApiResponse(200, {}, "Book deleted successfully"))
     
   } catch (error) {
     return res
@@ -197,10 +185,43 @@ const deleteBook = asyncHandler(async (req, res) => {
   }
 });
 
+//----------------------Update Book Rating-------------------
+const updateBookRating = asyncHandler(async (req, res) => {
+  const bookId = req.params.id;
+  const { rating } = req.body;
+
+  if (!bookId) {
+    throw new ApiError(400, "Invalid book id");
+  }
+  if (rating == null) {
+    throw new ApiError(400, "Rating is required");
+  }
+
+  try {
+    // Update book rating in the database
+    const book = await Book.findByIdAndUpdate(
+      bookId,
+      { rating },
+      { new: true }
+    );
+    return res
+      .status(200)
+      .json(new ApiResponse(200, book, "Book rating updated successfully"));
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update book rating",
+      error: error.message,
+    });
+  }
+});
+
+
 export {
   createBook, 
   getAllBooks,
   getSingleBook,
   updateBook,
   deleteBook,
+  updateBookRating,
 }
