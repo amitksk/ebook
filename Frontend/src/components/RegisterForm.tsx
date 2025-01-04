@@ -25,8 +25,8 @@ export default function RegisterForm() {
   // Mutations
   const mutation = useMutation({
     mutationFn: userRegister,
-    onSuccess: () => {
-      //console.log("Registration successful"+ JSON.stringify(data));
+    onSuccess: (data) => {
+      console.log("Registration successful"+ JSON.stringify(data));
       navigate("/auth/login");
     },
   });

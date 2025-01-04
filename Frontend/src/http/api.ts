@@ -42,6 +42,12 @@ export const createBook = async (data: FormData) => {
   return api.post("/api/v1/books/create-book", data, {
     headers: {
       "Content-Type": "multipart/form-data",
-    },
+      "Authorization": `Bearer ${localStorage.getItem('accessToken')}`
+    }
   });
+};
+
+export const getBookById = async (id: string) => {
+  const response = await api.get(`/api/v1/books/single-book/${id}`);
+  return response.data;
 };

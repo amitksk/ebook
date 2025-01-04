@@ -39,15 +39,11 @@ export default function LoginForm() {
       const refreshToken = response?.data?.data?.refreshToken;
 
       if (accessToken && refreshToken) {
-        console.log("Tokens:", accessToken, refreshToken);
+        //console.log("Tokens:", accessToken, refreshToken);
         
         setTokens(accessToken, refreshToken);
 
       console.log("Tokens saved to Zustand");
-
-      // Force a state update or check
-      const { accessToken: updatedAccessToken } = useTokenStore.getState();
-      console.log("Updated Access Token:", updatedAccessToken);
 
       navigate("/");
       } else {

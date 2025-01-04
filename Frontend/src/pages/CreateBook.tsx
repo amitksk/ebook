@@ -1,4 +1,3 @@
-"use client";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -39,7 +38,7 @@ function CreateBook() {
   const mutation = useMutation({
     mutationFn: createBook,
     onSuccess: (data) => {
-      queryClint.invalidateQueries({queryKey: ['books']}); // invalidate books query when a book is created
+      queryClint.invalidateQueries({queryKey: ['books']});
       console.log("Create Book Successfully" + JSON.stringify(data));
       navigate("/books");
     },

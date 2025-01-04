@@ -22,7 +22,7 @@ export interface TokenStore {
           },
           clearTokens: () => set({ accessToken: '', refreshToken: '' }),
         }),
-        { name: 'jwtTokens' } // LocalStorage key
+        { name: 'jwtTokens' }
       )
     )
   );
