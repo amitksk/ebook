@@ -9,7 +9,11 @@ import { uploadOnCloudinary } from "../services/cloudinary.js";
 const createBook = asyncHandler(async (req, res) => {
 
     const {title, description, genre, author} = req.body;
-    
+    //const userId = req.user?._id;
+
+    // if (!userId) {
+    //     throw new ApiError(401, "User not authenticated de do error!!!");
+    // }
 
     if (!title || !description || !genre || !author) {
         throw new ApiError(400, "All fields are required")
@@ -80,24 +84,29 @@ const getAllBooks = asyncHandler(async (req, res) => {
   }
 });
 
-// const getAllBooks = asyncHandler(async (req, res) => {
-//   try {
-//     const books = await Book.find({ userId: req.user.id }); // Only books belonging to the logged-in user
-//     res.status(200).json({ success: true, data: books });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Failed to retrieve books",
-//       error: error.message,
-//     });
-//   }
-// });
- 
+//----------------------Get single books----------------
+const getSingleBook = asyncHandler(async (req, res) => {
+  try {
+    // Fetch single book from the database
+    const book = await Book.findById(req.params.id);
+    return res
+    .status(200)
+    .json(new ApiResponse(200, book, "Book fetched successfully"))
+    
+  } catch (error) {
+    return res
+    .status(500)
+    .json({
+      success: false,
+      message: "Failed to retrieve book",
+      error: error.message,
+    });
+  }
+});
 
-//   const book = await book.find().populate("author", "name");
- 
 
 export {
   createBook, 
-  getAllBooks
+  getAllBooks,
+  getSingleBook,
 }

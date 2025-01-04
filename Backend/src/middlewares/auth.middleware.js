@@ -14,10 +14,11 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
     
         const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
     
-        //Reference for _id, refreshToken in user.model.js
         const user = await User.findById(decodedToken?._id).
         select("-password -refreshToken")
-    
+        
+        console.log("User: ", user)
+        console.log("decodedToken:", decodedToken?._id)
         if (!user) {
             throw new ApiError(403, "Unauthorized user..?")
         }

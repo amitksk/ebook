@@ -3,7 +3,8 @@ import { multerUpload } from "../middlewares/multer.middleware.js";
 //import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { 
     createBook, 
-    getAllBooks 
+    getAllBooks, 
+    getSingleBook
 } from "../controllers/book.controller.js";
 
 const router = Router();
@@ -24,5 +25,6 @@ router.route("/create-book").post(
     createBook)
 
 router.route("/").get(getAllBooks)
+router.route("/single-book/:id").get(getSingleBook)
 
 export default router;
