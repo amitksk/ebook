@@ -19,40 +19,33 @@ import useTokenStore from "@/store";
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
-  const { setTokens } = useTokenStore.getState();
-
-  // // Inside your component
-  // useEffect(() => {
-  //   const { accessToken } = useTokenStore.getState(); // Get token after the mutation
-  //   console.log("Access Token after update:", accessToken);
-  // }, [useTokenStore.getState().accessToken]); // Trigger effect when accessToken changes
+  const setTokens = useTokenStore((state) => state.setTokens);
 
   // Mutations
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: async (response) => {
-      const accessToken = response?.data?.data?.accessToken;
-      const refreshToken = response?.data?.data?.refreshToken;
+      const token = response?.data?.data?.token;
 
-      if (accessToken && refreshToken) {
-        //console.log("Tokens:", accessToken, refreshToken);
+      if (token) {
+        console.log("Token:", token);
         
-        setTokens(accessToken, refreshToken);
-
-      console.log("Tokens saved to Zustand");
-
-      navigate("/");
+        setTokens(token, () => {
+          console.log("Token saved to Zustand");
+          navigate("/");
+        });
       } else {
-        console.error("Access or Refresh token missing in response!");
+        console.error("Token missing in response!");
+        setError("Token missing in response!");
       }
     },
     onError: (err) => {
       console.error("Login Error: ", err.message || "Something went wrong");
-      alert(err.message || "Login failed");
+      setError(err.message || "Login failed");
     },
   });
 

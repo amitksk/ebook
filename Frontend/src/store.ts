@@ -3,50 +3,25 @@ import { devtools, persist } from 'zustand/middleware';
 
 export interface TokenStore {
     accessToken: string;
-    refreshToken: string;
-    //setTokens: (accessToken: string, refreshToken: string) => void;
-    setTokens: (accessToken: string, refreshToken: string, callback?: () => void) => void;
+    setTokens: (accessToken: string, callback?: () => void) => void;
     clearTokens: () => void;
-  }
-  
-  const useTokenStore = create<TokenStore>()(
+}
+
+const useTokenStore = create<TokenStore>()(
     devtools(
       persist(
         (set) => ({
           accessToken: '',
-          refreshToken: '',
-          setTokens: (accessToken, refreshToken, callback) => {
-            console.log('Storing tokens:', accessToken, refreshToken); // Debug log
-            set({ accessToken, refreshToken });
-            if (callback) callback(); // Optional callback after state update
+          setTokens: (accessToken, callback) => {
+            console.log('Storing tokens:', accessToken);
+            set({ accessToken });
+            if (callback) callback();
           },
-          clearTokens: () => set({ accessToken: '', refreshToken: '' }),
+          clearTokens: () => set({ accessToken: '' }),
         }),
-        { name: 'jwtTokens' }
+        { name: 'accessToken' }
       )
     )
-  );
-  
-  
-  export default useTokenStore;
-  
+);
 
-  // const useTokenStore = create<TokenStore>()(
-  //   devtools(
-  //     persist(
-  //       (set) => ({
-  //         accessToken: '',
-  //         refreshToken: '',
-  //         setTokens: (accessToken, refreshToken) => {
-  //           //console.log('Storing tokens:', accessToken, refreshToken);
-  //           set({ accessToken, refreshToken });
-  //         },
-  //         clearTokens: () => set({ accessToken: '', refreshToken: '' }),
-  //       }),
-  //       { name: 'jwtTokens' } // LocalStorage key
-  //     )
-  //   )
-  // );
-  
-  // export default useTokenStore;
-  
+export default useTokenStore;

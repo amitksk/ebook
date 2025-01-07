@@ -5,8 +5,7 @@ import {
   changePassword,
   getCurrentUser,
   loginUser, 
-  logoutUser, 
-  refreshAccessToken, 
+  logoutUser,  
   registerUser,
   updateProfileDetails,
   updateUserAvatar,
@@ -18,7 +17,6 @@ const router = Router();
 router.route("/register").post(registerUser)
 router.route("/login").post(loginUser)
 router.route("/logout").post(verifyJWT, logoutUser)
-router.route("/refresh-token").post(verifyJWT, refreshAccessToken)
 router.route("/change-password").post(verifyJWT, changePassword)
 router.route("/get-user").get(verifyJWT, getCurrentUser)
 router.route("/update-profile").patch(verifyJWT, updateProfileDetails)

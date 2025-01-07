@@ -1,4 +1,4 @@
-//import useTokenStore from "@/store";
+import useTokenStore from "@/store";
 import axios from "axios";
 
 const api = axios.create({
@@ -8,19 +8,18 @@ const api = axios.create({
     },
   });
   
-  // api.interceptors.request.use((config) => {
-  //     const { accessToken } = useTokenStore.getState(); // Access Zustand state
-  //     console.log('Interceptor Access Token:', accessToken);
-  //     if (accessToken) {
-  //       config.headers.Authorization = `Bearer ${accessToken}`;
-  //     } else {
-  //       console.warn("No access token found! Ensure Zustand is correctly setting tokens.");
-  //     }
-  
-  //     console.log("Request Config:", config);
-  //     return config;
-  //   },
-  // );
+  api.interceptors.request.use((config) => {
+      const { accessToken } = useTokenStore.getState(); // Access Zustand state
+      console.log('Interceptor Access Token:', accessToken);
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      } else {
+        console.warn("No access token found! Ensure Zustand is correctly setting tokens.");
+      }
+      console.log("Request Config:", config);
+      return config;
+    },
+  );
   
 
 export const login = async (data: {email: string, password: string}) => {
@@ -41,16 +40,32 @@ export const getBookById = async (id: string) => {
   return response.data;
 };
 
-export const createBook = async (data: FormData) => {
+// export const createBook = (data: FormData) => {
+//   const token = useTokenStore.getState().accessToken;
+//   console.log('Access Token:', token);
+//   return api.post("/api/v1/books/create-book", data, {
+//     headers: {
+//       "Content-Type": "multipart/form-data",
+//       'Authorization': `Bearer ${token}`,
+//     },
+//   });
+// };
+
+export const createBook = (data: FormData) => {
   return api.post("/api/v1/books/create-book", data, {
     headers: {
       "Content-Type": "multipart/form-data",
-      "Authorization": `Bearer ${localStorage.getItem('accessToken')}`
-    }
+    },
   });
 };
 
+
 export const updateBookRating = async ({ id, rating }: { id: string, rating: number }) => {
   const response = await api.patch(`/api/v1/books/rating/${id}`, { rating });
+  return response.data;
+};
+
+export const getAuthorBooks = async () => {
+  const response = await api.get('/api/v1/books/author-all-books');
   return response.data;
 };

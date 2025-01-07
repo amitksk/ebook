@@ -1,40 +1,15 @@
-import { asyncHandler } from "../services/asyncHandler.js";
 import { ApiError } from "../services/ApiError.js";
-import jwt from "jsonwebtoken"
-import { User } from "../models/user.model.js";
+import jwt from "jsonwebtoken";
 
-const verifyJWT = asyncHandler(async (req, res, next) => {
+const verifyJWT = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1]; // Extract the token from the header
+    const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    req.user = decode;
+    next();
+  } catch (error) {
+    next(new ApiError(401, "Unauthorized: Invalid token must be provided"));
+  }
+};
 
-    try {
-        const token = req.cookies?.access_token || 
-        req.header("Authorization")?.replace("Bearer", "")
-        if (!token) {
-            throw new ApiError(401, "Access denied. No token provided")
-        }
-    
-        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-    
-        const user = await User.findById(decodedToken?._id).
-        select("-password -refreshToken")
-        
-        console.log("User: ", user)
-        console.log("decodedToken:", decodedToken?._id)
-        if (!user) {
-            throw new ApiError(403, "Unauthorized user..?")
-        }
-    
-        req.user = user;
-        next()
-
-    } catch (error) {
-        throw new ApiError(401, "Invalid Access Token..!" || error?.message )
-        
-    }
-
- })
-
-export {verifyJWT}
-
-
-
- 
+export { verifyJWT };

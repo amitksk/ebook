@@ -3,7 +3,7 @@ import { Header } from "../components/dashboard/Header";
 import { Sidebar } from "../components/dashboard/Sidebar";
 import { Link, Outlet } from "react-router-dom";
 import {Footer} from "../components/dashboard/Footer";
-import { Book, Home, PlusCircle } from "lucide-react";
+import { Book, Home, PersonStanding, PlusCircle } from "lucide-react";
  
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -46,6 +46,14 @@ export default function DashboardLayout() {
             >
               <PlusCircle className="inline-block w-5 h-5 mr-2" />
               Create
+            </Link>
+
+            <Link
+              to="/books/author-book"
+              className="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-800"
+            >
+              <PersonStanding className="inline-block w-5 h-5 mr-2" />
+              Author Book
             </Link>
           </nav>
         </aside>
