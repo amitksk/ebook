@@ -3,7 +3,7 @@ import { Header } from "../components/dashboard/Header";
 import { Sidebar } from "../components/dashboard/Sidebar";
 import { Link, Outlet } from "react-router-dom";
 import {Footer} from "../components/dashboard/Footer";
-import { Book, Home, PersonStanding, PlusCircle } from "lucide-react";
+import { Book, Home, PlusCircle } from "lucide-react";
  
 export default function DashboardLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
