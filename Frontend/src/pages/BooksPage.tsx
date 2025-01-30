@@ -64,14 +64,14 @@ function BooksPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {books.map((book: any) => (
             <BookCard
-              key={book._id} // Unique key for each book
+              key={book._id}
               title={book.title}
               description={book.description}
               author={book.author}
               genre={book.genre}
               coverImage={book.coverImage}
               bookPDF={book.file}
-              onClick={() => navigate(`/books/${book._id}`)} // Navigate to details page
+              onClick={() => navigate(`/books/${book._id}`)}
             />
           ))}
         </div>

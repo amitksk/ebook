@@ -3,13 +3,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { BookAIcon, HomeIcon, PersonStandingIcon, PlusCircle } from 'lucide-react';
+import { BookAIcon, HomeIcon, PlusCircle } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: 'Home', icon: HomeIcon }, // Default route
   { href: '/books', label: 'Books', icon: BookAIcon },
   { href: '/books/create', label: 'Create', icon:PlusCircle },
-  { href: '/books/author-book', label: 'Author Book', icon: PersonStandingIcon },
+  //{ href: '/books/author-book', label: 'Author Book', icon: PersonStandingIcon },
 ];
 
 interface SidebarProps {

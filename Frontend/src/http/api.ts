@@ -40,17 +40,6 @@ export const getBookById = async (id: string) => {
   return response.data;
 };
 
-// export const createBook = (data: FormData) => {
-//   const token = useTokenStore.getState().accessToken;
-//   console.log('Access Token:', token);
-//   return api.post("/api/v1/books/create-book", data, {
-//     headers: {
-//       "Content-Type": "multipart/form-data",
-//       'Authorization': `Bearer ${token}`,
-//     },
-//   });
-// };
-
 export const createBook = (data: FormData) => {
   return api.post("/api/v1/books/create-book", data, {
     headers: {
@@ -58,7 +47,6 @@ export const createBook = (data: FormData) => {
     },
   });
 };
-
 
 export const updateBookRating = async ({ id, rating }: { id: string, rating: number }) => {
   const response = await api.patch(`/api/v1/books/rating/${id}`, { rating });
