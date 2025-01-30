@@ -14,9 +14,7 @@ interface HeaderProps {
 }
 
 export function Header({ toggleSidebar }: HeaderProps) {
-   
-   const navigate = useNavigate();
-
+  const navigate = useNavigate();
 
   // Logout function
   const logoutFn = () => {
@@ -25,35 +23,54 @@ export function Header({ toggleSidebar }: HeaderProps) {
   };
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 bg-background border-b">
-      <div className="flex items-center">
+    <header className="flex items-center justify-between px-4 md:px-6 py-4 bg-background border-b">
+      {/* Left Section - Sidebar Toggle & Logo */}
+      <div className="flex items-center space-x-4">
+        {/* Sidebar Toggle Button (Hidden on Large Screens) */}
         <Button
           variant="ghost"
           size="icon"
           onClick={toggleSidebar}
-          className="mr-4 lg"
+          className="lg:hidden"
           aria-label="Toggle sidebar"
         >
           <Menu className="h-6 w-6" />
         </Button>
+
+        {/* Logo */}
         <Link to="/dashboard" className="text-2xl font-bold">
           Ebook
         </Link>
       </div>
-      <div className="flex items-center space-x-4">
-        <div className="relative md:block">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+
+      {/* Center Section - Search Input (Hidden on Small Screens) */}
+      <div className="hidden md:flex md:flex-1 justify-center">
+        <div className="relative w-full max-w-md">
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
             placeholder="Search..."
-            className="pl-8 w-[300px]"
+            className="pl-10 pr-4 py-2 w-full rounded-md"
           />
         </div>
+      </div>
 
-        {/* Dropdown Menu */}
+      {/* Right Section - Search Icon (Mobile) & User Dropdown */}
+      <div className="flex items-center space-x-4">
+        {/* Mobile Search Button */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden"
+          aria-label="Search"
+        >
+          <Search className="h-5 w-5" />
+        </Button>
+
+        {/* User Profile Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="p-3 rounded-full">
+            <Button variant="ghost" className="p-2 rounded-full">
               <UserCircle className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12" />
             </Button>
           </DropdownMenuTrigger>

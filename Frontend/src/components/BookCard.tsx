@@ -1,4 +1,3 @@
-//import { Book, Download } from "lucide-react";
 import { Book } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -60,11 +59,3 @@ export function BookCard({
   );
 }
 
-
-
-{/* <Button variant="secondary" size="sm" asChild>
-  <a href={bookPDF} download>
-    <Download className="mr-2 h-4 w-4" />
-    Download PDF
-  </a>
-</Button>; */}

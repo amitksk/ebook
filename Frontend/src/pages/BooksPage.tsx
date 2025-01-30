@@ -34,33 +34,30 @@ function BooksPage() {
   const books = Array.isArray(data?.data) ? data.data : [];
 
   return (
-    <section>
-      <div>
-         <Breadcrumb>
-           <BreadcrumbList>
-             <BreadcrumbItem>
-               <BreadcrumbLink>
-                 <Link to={"/"}>Home</Link>
-               </BreadcrumbLink>
-             </BreadcrumbItem>
-             <BreadcrumbSeparator />
-             <BreadcrumbItem>
-               <BreadcrumbPage>Books</BreadcrumbPage>
-             </BreadcrumbItem>
-           </BreadcrumbList>
-         </Breadcrumb>
+    <section className="p-4 md:p-8">
+      <div className="flex flex-col md:flex-row md:justify-between items-center mb-6">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink>
+                <Link to={"/"}>Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Books</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <Link to="/books/create" className="mt-4 md:mt-0">
+          <Button>
+            <span className="ml-2">Add Book</span>
+          </Button>
+        </Link>
+      </div>
 
-         <Link to="/books/create">
-           <div className="flex justify-end">
-             <Button>
-               <span className="ml-2">Add Book</span>
-             </Button>
-           </div>
-         </Link>
-       </div>
-
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Books</h1>
+      <div className="container mx-auto px-4 py-6">
+        <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center md:text-left">Books</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {books.map((book: any) => (
             <BookCard
