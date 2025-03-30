@@ -67,7 +67,6 @@ import {
   Card,
   CardContent,
   CardFooter,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 
@@ -89,21 +88,22 @@ export function BookCard({
   coverImage,
   onClick,
 }: BookCardProps) {
+  
   return (
-    <Card
-      className="w-full sm:max-w-xs md:max-w-sm lg:max-w-md mx-auto p-0 cursor-pointer hover:shadow-lg transition"
-      onClick={onClick} // Use the onClick handler
-    >
-      <CardHeader className="items-center">
-        <div className="relative w-full sm:w-40 md:w-48">
+      <Card
+        className="group min-w-[250px] flex-none transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg"
+        onClick={onClick}
+      >
+        <CardContent className="p-4">
+          <div className="relative mb-2 h-56 w-full aspect-square overflow-hidden rounded-lg bg-muted">
           <img
-            src={coverImage}
-            alt={`Cover of ${title}`}
-            className="object-cover rounded-t-lg w-full h-full"
-          />
-        </div>
-      </CardHeader>
-      <CardContent>
+              src={coverImage}
+              alt={`Cover of ${title}`}
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          </div>
+        </CardContent>
+        <CardContent>
         <CardTitle className="mb-2 text-sm sm:text-base line-clamp-1">{title}</CardTitle>
         <p className="text-xs sm:text-sm text-muted-foreground mb-2">by {author}</p>
         <p className="text-xs sm:text-sm text-muted-foreground mb-4">Genre: {genre}</p>
@@ -118,6 +118,6 @@ export function BookCard({
           Read More
         </Button>
       </CardFooter>
-    </Card>
+      </Card>
   );
 }
